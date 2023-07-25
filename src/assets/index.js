@@ -8,6 +8,7 @@ import menu from "./menu.svg";
 import close from "./close.svg";
 import logoC from "./logo-color.svg";
 import logoS from "./logoS.svg";
+import zS from "./zS.png";
 
 import css from "./tech/css.png";
 import docker from "./tech/docker.png";
@@ -33,6 +34,7 @@ import jobit from "./jobit.png";
 import tripguide from "./tripguide.png";
 
 export {
+  zS,
   logoS,
   logoC,
   logo,
