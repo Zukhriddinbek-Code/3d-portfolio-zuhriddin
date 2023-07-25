@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import { styles } from "../styles";
@@ -13,7 +14,21 @@ const Hero = () => {
           <div className="w-5 h-5 rounded-full bg-[#915eff]" />
           <div className="w-1 sm:h-80 h-40 violet-gradient" />
         </div>
+
+        <div>
+          <h1 className={`${styles.heroHeadText} text-white`}>
+            Hi, I'm <span className="text-[#915eff]">Zuhriddin</span>
+          </h1>
+          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
+            A self-taught Software Engineer, eager to
+            <br className="sm:block hidden" /> tackle web development challenges
+            to expand
+            <br className="sm:block hidden" /> my learning and developer skills.
+          </p>
+        </div>
       </div>
+
+      <ComputersCanvas />
     </section>
   );
 };
