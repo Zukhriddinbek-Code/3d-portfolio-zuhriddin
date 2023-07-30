@@ -31,8 +31,8 @@ export const navLinks = [
     title: "About",
   },
   {
-    id: "work",
-    title: "Work",
+    id: "education",
+    title: "Education",
   },
   {
     id: "contact",
@@ -114,7 +114,7 @@ const technologies = [
   },
 ];
 
-const experiences = [
+const education = [
   {
     title: "React.js Developer",
     company_name: "Starbucks",
@@ -262,4 +262,4 @@ const projects = [
   },
 ];
 
-export { services, technologies, experiences, testimonials, projects };
+export { services, technologies, education, testimonials, projects };
