@@ -21,7 +21,6 @@ import {
   shopify,
   carrent,
   jobit,
-  tripguide,
   threejs,
 } from "../assets";
 
@@ -33,6 +32,10 @@ export const navLinks = [
   {
     id: "education",
     title: "Education",
+  },
+  {
+    id: "project",
+    title: "Projects",
   },
   {
     id: "contact",
@@ -217,6 +220,7 @@ const projects = [
     ],
     image: carrent,
     source_code_link: "https://github.com/",
+    liveWeb: "https://github.com/",
   },
   {
     name: "Job IT",
@@ -238,6 +242,7 @@ const projects = [
     ],
     image: jobit,
     source_code_link: "https://github.com/",
+    liveWeb: "https://github.com/",
   },
   {
     name: "Trip Guide",
@@ -257,8 +262,9 @@ const projects = [
         color: "pink-text-gradient",
       },
     ],
-    image: tripguide,
+    image: jobit,
     source_code_link: "https://github.com/",
+    liveWeb: "https://github.com/",
   },
 ];
 
