@@ -11,13 +11,53 @@ import { SectionWrapper } from "../hoc";
 
 import { slideIn } from "../utils/motion";
 
+// template_81xdtcl
+// service_gdx1jac
+// w10dMPbI55i1qERtg
+
 const Contact = () => {
   const formRef = useRef();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {};
-  const handleSubmit = (e) => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm({ ...form, [name]: value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (form.name.length)
+      emailjs
+        .send(
+          "service_gdx1jac",
+          "template_81xdtcl",
+          {
+            from_name: form.name,
+            to_name: "Zuhriddin Ganiev",
+            from_email: form.email,
+            to_email: "zuhriddinganiyev2000@gmail.com",
+            message: form.message,
+          },
+          "w10dMPbI55i1qERtg"
+        )
+        .then(
+          () => {
+            setLoading(false);
+            alert("Thank you! I will get back to you!");
+
+            setForm({ name: "", email: "", message: "" });
+          },
+          (error) => {
+            setLoading(false);
+            console.log(error);
+
+            alert("Something went wrong!");
+          }
+        );
+  };
 
   return (
     <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
@@ -41,7 +81,7 @@ const Contact = () => {
               value={form.name}
               onChange={handleChange}
               placeholder="What's your name?"
-              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
           </label>
           <label className="flex flex-col">
@@ -52,7 +92,7 @@ const Contact = () => {
               value={form.email}
               onChange={handleChange}
               placeholder="What's your email?"
-              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
           </label>
           <label className="flex flex-col">
@@ -63,7 +103,7 @@ const Contact = () => {
               value={form.message}
               onChange={handleChange}
               placeholder="What do you want to say?"
-              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
           </label>
 
