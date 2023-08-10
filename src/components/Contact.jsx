@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 
@@ -15,21 +15,58 @@ import { slideIn } from "../utils/motion";
 // service_gdx1jac
 // w10dMPbI55i1qERtg
 
+const isEmpty = (value) => value.trim() === "";
+const isEmailInc = (value) => value.trim() === "" && value.trim().includes("@");
+
 const Contact = () => {
-  const formRef = useRef();
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  // const formRef = useRef();
+  // const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [formInputsValidity, setFormInputsValidity] = useState({
+    name: true,
+    email: true,
+    message: true,
+  });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
+  const nameInputRef = useRef();
+  const emailInputRef = useRef();
+  const messageInputRef = useRef();
+
+  /*const handleChange = (e) => {
     const { name, value } = e.target;
 
     setForm({ ...form, [name]: value });
   };
+  */
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const enteredName = nameInputRef.current.value;
+    const enteredEmail = emailInputRef.current.value;
+    const enteredMessage = messageInputRef.current.value;
+
+    const enteredNameIsValid = !isEmpty(enteredName);
+    const enteredEmailIsValid = !isEmailInc(enteredEmail);
+    const enteredMessageIsValid = !isEmpty(enteredMessage);
+
+    setFormInputsValidity({
+      name: enteredNameIsValid,
+      email: enteredEmailIsValid,
+      message: enteredMessageIsValid,
+    });
+
+    const formIsValid =
+      enteredNameIsValid && enteredEmailIsValid && enteredMessageIsValid;
+
+    if (!formIsValid) {
+      return;
+    }
+
+    //submit data
     setLoading(true);
 
-    if (form.name.length)
+    /*    if (form.name.length)
       emailjs
         .send(
           "service_gdx1jac",
@@ -56,7 +93,7 @@ const Contact = () => {
 
             alert("Something went wrong!");
           }
-        );
+        );*/
   };
 
   return (
@@ -69,7 +106,7 @@ const Contact = () => {
         <h3 className={styles.sectionHeadText}>Contact.</h3>
 
         <form
-          ref={formRef}
+          // ref={formRef}
           onSubmit={handleSubmit}
           className="mt-12 flex flex-col gap-8"
         >
@@ -78,33 +115,41 @@ const Contact = () => {
             <input
               type="text"
               name="name"
-              value={form.name}
-              onChange={handleChange}
+              ref={nameInputRef}
+              // value={form.name}
+              // onChange={handleChange}
               placeholder="What's your name?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
+            {!formInputsValidity.name && <p>Please enter a valid name!</p>}
           </label>
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Email</span>
             <input
               type="email"
               name="email"
-              value={form.email}
-              onChange={handleChange}
+              ref={emailInputRef}
+              // value={form.email}
+              // onChange={handleChange}
               placeholder="What's your email?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
+            {!formInputsValidity.email && (
+              <p>Please enter a valid email address!</p>
+            )}
           </label>
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Message</span>
             <textarea
               rows="7"
               name="message"
-              value={form.message}
-              onChange={handleChange}
+              ref={messageInputRef}
+              // value={form.message}
+              // onChange={handleChange}
               placeholder="What do you want to say?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
+            {!formInputsValidity.message && <p>Message is empty!</p>}
           </label>
 
           <button className="bg-tertiry py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl">
