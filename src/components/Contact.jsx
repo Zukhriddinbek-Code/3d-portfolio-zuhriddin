@@ -16,56 +16,114 @@ import { slideIn } from "../utils/motion";
 // w10dMPbI55i1qERtg
 
 const isEmpty = (value) => value.trim() === "";
-const isEmailInc = (value) => value.trim() === "" && value.trim().includes("@");
+const isEmailInc = (value) => !value.trim().includes("@");
 
 const Contact = () => {
-  // const formRef = useRef();
-  // const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [formInputsValidity, setFormInputsValidity] = useState({
-    name: true,
-    email: true,
-    message: true,
-  });
+  //loading state
   const [loading, setLoading] = useState(false);
 
-  const nameInputRef = useRef();
-  const emailInputRef = useRef();
-  const messageInputRef = useRef();
+  //overall form validity
+  const [formIsValid, setFormIsValid] = useState(false);
 
-  /*const handleChange = (e) => {
-    const { name, value } = e.target;
+  //states of input data
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredMessage, setEnteredMessage] = useState("");
 
-    setForm({ ...form, [name]: value });
+  //touched states
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
+  const [enteredMessageTouched, setEnteredMessageTouched] = useState(false);
+
+  //validity of entered data
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  const [enteredEmailIsValid, setEnteredEmailIsValid] = useState(false);
+  const [enteredMessageIsValid, setEnteredMessageIsValid] = useState(false);
+
+  //onChange handlers
+  const nameInputChangeHandler = (event) => {
+    setEnteredName(event.target.value);
+    if (!isEmpty(event.target.value)) {
+      setEnteredNameIsValid(true);
+    }
   };
-  */
+  const emailInputChangeHandler = (event) => {
+    setEnteredEmail(event.target.value);
 
+    if (!isEmailInc(event.target.value)) {
+      setEnteredEmailIsValid(true);
+    }
+  };
+  const messageInputChangeHandler = (event) => {
+    setEnteredMessage(event.target.value);
+
+    if (!isEmpty(event.target.value)) {
+      setEnteredMessageIsValid(true);
+    }
+  };
+
+  //blur handlers
+  const nameInputBlurHandler = (event) => {
+    setEnteredNameTouched(true);
+    if (isEmpty(enteredName)) {
+      setEnteredNameIsValid(false);
+    }
+  };
+  const emailInputBlurHandler = (event) => {
+    setEnteredEmailTouched(true);
+    if (isEmailInc(enteredEmail)) {
+      setEnteredEmailIsValid(false);
+    }
+  };
+  const messageInputBlurHandler = (event) => {
+    setEnteredMessageTouched(true);
+    if (isEmpty(enteredMessage)) {
+      setEnteredMessageIsValid(false);
+    }
+  };
+
+  //onSubmit handler for the form
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const enteredName = nameInputRef.current.value;
-    const enteredEmail = emailInputRef.current.value;
-    const enteredMessage = messageInputRef.current.value;
+    // we assume that when submitted user is sure that every input field is touched, so we say touched state to true
+    setEnteredNameTouched(true);
+    setEnteredEmailTouched(true);
+    setEnteredMessageTouched(true);
 
-    const enteredNameIsValid = !isEmpty(enteredName);
-    const enteredEmailIsValid = !isEmailInc(enteredEmail);
-    const enteredMessageIsValid = !isEmpty(enteredMessage);
+    // we make checks
+    if (isEmpty(enteredName)) {
+      setEnteredNameIsValid(false);
+      return;
+    }
 
-    setFormInputsValidity({
-      name: enteredNameIsValid,
-      email: enteredEmailIsValid,
-      message: enteredMessageIsValid,
-    });
+    if (isEmailInc(enteredEmail)) {
+      setEnteredEmailIsValid(false);
+      return;
+    }
 
-    const formIsValid =
-      enteredNameIsValid && enteredEmailIsValid && enteredMessageIsValid;
+    if (isEmpty(enteredMessage)) {
+      setEnteredMessageIsValid(false);
+      return;
+    }
+
+    // if we pass the validity checks, we assume that they are valid
+    setEnteredNameIsValid(true);
+    setEnteredEmailIsValid(true);
+    setEnteredMessageIsValid(true);
+
+    if (enteredNameIsValid && enteredEmailIsValid && enteredMessageIsValid) {
+      setFormIsValid(true);
+    }
 
     if (!formIsValid) {
       return;
     }
 
     //submit data
-    setLoading(true);
-
+    console.log(enteredName);
+    console.log(enteredEmail);
+    console.log(enteredMessage);
     /*    if (form.name.length)
       emailjs
         .send(
@@ -94,7 +152,20 @@ const Contact = () => {
             alert("Something went wrong!");
           }
         );*/
+
+    // reseting input fields to an empty field
+    setLoading(true);
+    setEnteredNameTouched(false);
+    setEnteredEmailTouched(false);
+    setEnteredMessageTouched(false);
+    setEnteredName("");
+    setEnteredEmail("");
+    setEnteredMessage("");
   };
+
+  const nameInputInvalid = !enteredNameIsValid && enteredNameTouched;
+  const emailInputInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  const messageInputInvalid = !enteredMessageIsValid && enteredMessageTouched;
 
   return (
     <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
@@ -115,41 +186,39 @@ const Contact = () => {
             <input
               type="text"
               name="name"
-              ref={nameInputRef}
-              // value={form.name}
-              // onChange={handleChange}
+              onChange={nameInputChangeHandler}
+              onBlur={nameInputBlurHandler}
+              value={enteredName}
               placeholder="What's your name?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
-            {!formInputsValidity.name && <p>Please enter a valid name!</p>}
+            {nameInputInvalid && <p>Please enter a valid name!</p>}
           </label>
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Email</span>
             <input
               type="email"
               name="email"
-              ref={emailInputRef}
-              // value={form.email}
-              // onChange={handleChange}
+              onChange={emailInputChangeHandler}
+              onBlur={emailInputBlurHandler}
+              value={enteredEmail}
               placeholder="What's your email?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
-            {!formInputsValidity.email && (
-              <p>Please enter a valid email address!</p>
-            )}
+            {emailInputInvalid && <p>Please enter a valid email address!</p>}
           </label>
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Message</span>
             <textarea
               rows="7"
               name="message"
-              ref={messageInputRef}
-              // value={form.message}
-              // onChange={handleChange}
+              onChange={messageInputChangeHandler}
+              onBlur={messageInputBlurHandler}
+              value={enteredMessage}
               placeholder="What do you want to say?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
             />
-            {!formInputsValidity.message && <p>Message is empty!</p>}
+            {messageInputInvalid && <p>Message is empty!</p>}
           </label>
 
           <button className="bg-tertiry py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl">
