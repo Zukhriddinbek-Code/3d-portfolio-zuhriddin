@@ -36,50 +36,40 @@ const Contact = () => {
   const [enteredMessageTouched, setEnteredMessageTouched] = useState(false);
 
   //validity of entered data
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
-  const [enteredEmailIsValid, setEnteredEmailIsValid] = useState(false);
-  const [enteredMessageIsValid, setEnteredMessageIsValid] = useState(false);
+  // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  // const [enteredEmailIsValid, setEnteredEmailIsValid] = useState(false);
+  // const [enteredMessageIsValid, setEnteredMessageIsValid] = useState(false);
+
+  const enteredNameIsValid = !isEmpty(enteredName);
+  const enteredEmailIsValid = !isEmailInc(enteredEmail);
+  const enteredMessageIsValid = !isEmpty(enteredMessage);
+
+  //validation for rendering error p tag
+  const nameInputInvalid = !enteredNameIsValid && enteredNameTouched;
+  const emailInputInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  const messageInputInvalid = !enteredMessageIsValid && enteredMessageTouched;
 
   //onChange handlers
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
-    if (!isEmpty(event.target.value)) {
-      setEnteredNameIsValid(true);
-    }
   };
   const emailInputChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
-
-    if (!isEmailInc(event.target.value)) {
-      setEnteredEmailIsValid(true);
-    }
   };
+
   const messageInputChangeHandler = (event) => {
     setEnteredMessage(event.target.value);
-
-    if (!isEmpty(event.target.value)) {
-      setEnteredMessageIsValid(true);
-    }
   };
 
   //blur handlers
   const nameInputBlurHandler = (event) => {
     setEnteredNameTouched(true);
-    if (isEmpty(enteredName)) {
-      setEnteredNameIsValid(false);
-    }
   };
   const emailInputBlurHandler = (event) => {
     setEnteredEmailTouched(true);
-    if (isEmailInc(enteredEmail)) {
-      setEnteredEmailIsValid(false);
-    }
   };
   const messageInputBlurHandler = (event) => {
     setEnteredMessageTouched(true);
-    if (isEmpty(enteredMessage)) {
-      setEnteredMessageIsValid(false);
-    }
   };
 
   //onSubmit handler for the form
@@ -92,26 +82,19 @@ const Contact = () => {
     setEnteredMessageTouched(true);
 
     // we make checks
-    if (isEmpty(enteredName)) {
-      setEnteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    if (isEmailInc(enteredEmail)) {
-      setEnteredEmailIsValid(false);
+    if (!enteredEmailIsValid) {
       return;
     }
 
-    if (isEmpty(enteredMessage)) {
-      setEnteredMessageIsValid(false);
+    if (!enteredMessageIsValid) {
       return;
     }
 
     // if we pass the validity checks, we assume that they are valid
-    setEnteredNameIsValid(true);
-    setEnteredEmailIsValid(true);
-    setEnteredMessageIsValid(true);
-
     if (enteredNameIsValid && enteredEmailIsValid && enteredMessageIsValid) {
       setFormIsValid(true);
     }
@@ -155,17 +138,15 @@ const Contact = () => {
 
     // reseting input fields to an empty field
     setLoading(true);
-    setEnteredNameTouched(false);
-    setEnteredEmailTouched(false);
-    setEnteredMessageTouched(false);
+    //setting entered input data back to empty field
     setEnteredName("");
     setEnteredEmail("");
     setEnteredMessage("");
+    //setting touched state back to false
+    setEnteredNameTouched(false);
+    setEnteredEmailTouched(false);
+    setEnteredMessageTouched(false);
   };
-
-  const nameInputInvalid = !enteredNameIsValid && enteredNameTouched;
-  const emailInputInvalid = !enteredEmailIsValid && enteredEmailTouched;
-  const messageInputInvalid = !enteredMessageIsValid && enteredMessageTouched;
 
   return (
     <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
@@ -190,9 +171,15 @@ const Contact = () => {
               onBlur={nameInputBlurHandler}
               value={enteredName}
               placeholder="What's your name?"
-              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
+              className={`${
+                nameInputInvalid && styles.inputBorderError
+              } bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg font-medium`}
             />
-            {nameInputInvalid && <p>Please enter a valid name!</p>}
+            {nameInputInvalid && (
+              <p className={styles.errorParagraph}>
+                Please enter a valid name!
+              </p>
+            )}
           </label>
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Email</span>
@@ -203,9 +190,15 @@ const Contact = () => {
               onBlur={emailInputBlurHandler}
               value={enteredEmail}
               placeholder="What's your email?"
-              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
+              className={`${
+                emailInputInvalid && styles.inputBorderError
+              } bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg font-medium`}
             />
-            {emailInputInvalid && <p>Please enter a valid email address!</p>}
+            {emailInputInvalid && (
+              <p className={styles.errorParagraph}>
+                Please enter a valid email address!
+              </p>
+            )}
           </label>
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Message</span>
@@ -216,12 +209,20 @@ const Contact = () => {
               onBlur={messageInputBlurHandler}
               value={enteredMessage}
               placeholder="What do you want to say?"
-              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg border-none font-medium"
+              className={`${
+                messageInputInvalid && styles.inputBorderError
+              } bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg font-medium`}
             />
-            {messageInputInvalid && <p>Message is empty!</p>}
+            {messageInputInvalid && (
+              <p className={styles.errorParagraph}>Required field!</p>
+            )}
           </label>
 
-          <button className="bg-tertiry py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl">
+          <button
+            className={`${
+              !formIsValid && "cursor-not-allowed"
+            } bg-tertiry py-3 px-8 outline-none w-fit text-white font-bold shadow-lg shadow-primary rounded-xl`}
+          >
             {loading ? "Sending..." : "Send"}
           </button>
         </form>

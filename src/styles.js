@@ -12,6 +12,8 @@ const styles = {
     "text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]",
   sectionSubText:
     "sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider",
+  errorParagraph: "pt-3 px-2 text-red-500 font-medium",
+  inputBorderError: "border-2 border-rose-400 focus:border-[#ff8800]",
 };
 
 export { styles };
