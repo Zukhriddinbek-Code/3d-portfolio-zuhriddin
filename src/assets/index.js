@@ -28,6 +28,9 @@ import meta from "./company/meta.png";
 import shopify from "./company/shopify.png";
 import starbucks from "./company/starbucks.png";
 import tesla from "./company/tesla.png";
+import sejong from "./company/sejong.png";
+import jonas from "./company/jonas.png";
+import udemy from "./company/udemy.png";
 
 import carrent from "./carrent.png";
 import jobit from "./jobit.png";
@@ -63,4 +66,7 @@ export {
   tesla,
   carrent,
   jobit,
+  sejong,
+  jonas,
+  udemy,
 };

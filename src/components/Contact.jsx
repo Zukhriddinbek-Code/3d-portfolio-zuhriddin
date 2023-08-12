@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
+import Modal from "./Modal";
 
 import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
@@ -22,6 +23,10 @@ const Contact = () => {
   //loading state
   const [loading, setLoading] = useState(false);
 
+  //state for modal rendering
+  const [isOpen, setIsOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   //overall form validity
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -34,11 +39,6 @@ const Contact = () => {
   const [enteredNameTouched, setEnteredNameTouched] = useState(false);
   const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
   const [enteredMessageTouched, setEnteredMessageTouched] = useState(false);
-
-  //validity of entered data
-  // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
-  // const [enteredEmailIsValid, setEnteredEmailIsValid] = useState(false);
-  // const [enteredMessageIsValid, setEnteredMessageIsValid] = useState(false);
 
   const enteredNameIsValid = !isEmpty(enteredName);
   const enteredEmailIsValid = !isEmailInc(enteredEmail);
@@ -75,8 +75,6 @@ const Contact = () => {
   //onSubmit handler for the form
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-
     // we assume that when submitted user is sure that every input field is touched, so we say touched state to true
     setEnteredNameTouched(true);
     setEnteredEmailTouched(true);
@@ -104,6 +102,8 @@ const Contact = () => {
       return;
     }
 
+    setLoading(true);
+
     //submit data
     emailjs
       .send(
@@ -121,7 +121,12 @@ const Contact = () => {
       .then(
         () => {
           setLoading(false);
-          alert("Thank you! I will get back to you!");
+          setIsOpen(true);
+          setSuccess(true);
+          // alert("Thank you! I will get back to you!");
+          // {
+          //   isOpen && <Modal setIsOpen={setIsOpen} />;
+          // }
 
           // reseting input fields to an empty field
           // setLoading(true);
@@ -138,8 +143,7 @@ const Contact = () => {
         },
         (error) => {
           setLoading(false);
-          console.log(error);
-
+          setSuccess(false);
           alert("Something went wrong!");
         }
       );
@@ -222,6 +226,7 @@ const Contact = () => {
           </button>
         </form>
       </motion.div>
+      {isOpen && <Modal success={success} setIsOpen={setIsOpen} />}
 
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
