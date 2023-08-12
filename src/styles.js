@@ -13,7 +13,7 @@ const styles = {
   sectionSubText:
     "sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider",
   errorParagraph: "pt-3 px-2 text-red-500 font-medium",
-  inputBorderError: "border-2 border-rose-400 focus:border-[#ff8800]",
+  inputBorderError: "border-2 border-rose-400",
 };
 
 export { styles };

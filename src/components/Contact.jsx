@@ -75,6 +75,7 @@ const Contact = () => {
   //onSubmit handler for the form
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // we assume that when submitted user is sure that every input field is touched, so we say touched state to true
     setEnteredNameTouched(true);
@@ -104,48 +105,44 @@ const Contact = () => {
     }
 
     //submit data
-    console.log(enteredName);
-    console.log(enteredEmail);
-    console.log(enteredMessage);
-    /*    if (form.name.length)
-      emailjs
-        .send(
-          "service_gdx1jac",
-          "template_81xdtcl",
-          {
-            from_name: form.name,
-            to_name: "Zuhriddin Ganiev",
-            from_email: form.email,
-            to_email: "zuhriddinganiyev2000@gmail.com",
-            message: form.message,
-          },
-          "w10dMPbI55i1qERtg"
-        )
-        .then(
-          () => {
-            setLoading(false);
-            alert("Thank you! I will get back to you!");
+    emailjs
+      .send(
+        "service_gdx1jac",
+        "template_81xdtcl",
+        {
+          from_name: enteredName,
+          to_name: "Zuhriddin Ganiev",
+          from_email: enteredEmail,
+          to_email: "zuhriddinganiyev2000@gmail.com",
+          message: enteredMessage,
+        },
+        "w10dMPbI55i1qERtg"
+      )
+      .then(
+        () => {
+          setLoading(false);
+          alert("Thank you! I will get back to you!");
 
-            setForm({ name: "", email: "", message: "" });
-          },
-          (error) => {
-            setLoading(false);
-            console.log(error);
+          // reseting input fields to an empty field
+          // setLoading(true);
+          //setting entered input data back to empty field
+          setEnteredName("");
+          setEnteredEmail("");
+          setEnteredMessage("");
+          //setting touched state back to false
+          setEnteredNameTouched(false);
+          setEnteredEmailTouched(false);
+          setEnteredMessageTouched(false);
 
-            alert("Something went wrong!");
-          }
-        );*/
+          // setForm({ name: "", email: "", message: "" });
+        },
+        (error) => {
+          setLoading(false);
+          console.log(error);
 
-    // reseting input fields to an empty field
-    setLoading(true);
-    //setting entered input data back to empty field
-    setEnteredName("");
-    setEnteredEmail("");
-    setEnteredMessage("");
-    //setting touched state back to false
-    setEnteredNameTouched(false);
-    setEnteredEmailTouched(false);
-    setEnteredMessageTouched(false);
+          alert("Something went wrong!");
+        }
+      );
   };
 
   return (
@@ -219,9 +216,7 @@ const Contact = () => {
           </label>
 
           <button
-            className={`${
-              !formIsValid && "cursor-not-allowed"
-            } bg-tertiry py-3 px-8 outline-none w-fit text-white font-bold shadow-lg shadow-primary rounded-xl`}
+            className={`bg-tertiry py-3 px-8 outline-none w-fit text-white font-bold shadow-lg shadow-primary rounded-xl`}
           >
             {loading ? "Sending..." : "Send"}
           </button>
