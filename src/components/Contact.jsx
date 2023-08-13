@@ -123,7 +123,7 @@ const Contact = () => {
           setLoading(false);
           setIsOpen(true);
           setSuccess(true);
-          // alert("Thank you! I will get back to you!");
+          alert("Thank you! I will get back to you!");
           // {
           //   isOpen && <Modal setIsOpen={setIsOpen} />;
           // }
@@ -226,7 +226,6 @@ const Contact = () => {
           </button>
         </form>
       </motion.div>
-      {isOpen && <Modal success={success} setIsOpen={setIsOpen} />}
 
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}

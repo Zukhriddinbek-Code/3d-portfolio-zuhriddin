@@ -10,20 +10,18 @@ import {
   reactjs,
   redux,
   tailwind,
-  nodejs,
-  mongodb,
-  git,
-  figma,
-  docker,
-  meta,
-  tesla,
-  shopify,
+  gith,
   carrent,
   jobit,
   threejs,
   sejong,
   udemy,
   jonas,
+  next,
+  c,
+  cplus,
+  java,
+  router,
 } from "../assets";
 
 export const navLinks = [
@@ -81,6 +79,7 @@ const technologies = [
     name: "TypeScript",
     icon: typescript,
   },
+  { name: "Next JS", icon: next },
   {
     name: "React JS",
     icon: reactjs,
@@ -94,29 +93,17 @@ const technologies = [
     icon: tailwind,
   },
   {
-    name: "Node JS",
-    icon: nodejs,
-  },
-  {
-    name: "MongoDB",
-    icon: mongodb,
-  },
-  {
     name: "Three JS",
     icon: threejs,
   },
   {
     name: "git",
-    icon: git,
+    icon: gith,
   },
-  {
-    name: "figma",
-    icon: figma,
-  },
-  {
-    name: "docker",
-    icon: docker,
-  },
+  { name: "C programming", icon: c },
+  { name: "Java", icon: java },
+  { name: "C++", icon: cplus },
+  { name: "React Router", icon: router },
 ];
 
 const education = [
